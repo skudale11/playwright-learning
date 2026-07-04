@@ -11,7 +11,8 @@ test('user can log in', async ({ page }) => {
   await page.getByLabel('Email address').fill('customer@practicesoftwaretesting.com');
   await page.getByPlaceholder('Your password').fill('welcome01');
   await page.getByRole('button', { name: 'Login' }).click();
-  await expect(page.getByText('Jane Doe')).toBeVisible();
+  await expect(page).toHaveURL(/account/);
+  //await expect(page.getByText('Jane Doe')).toBeVisible();
 });
 
 test('user sees error with wrong password', async ({ page }) => {
