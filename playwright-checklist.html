@@ -1,0 +1,186 @@
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  .wrap{padding:1.5rem 0}
+  .prog-outer{height:8px;background:var(--color-background-secondary);border-radius:4px;overflow:hidden;flex:1;min-width:120px}
+  .prog-inner{height:100%;border-radius:4px;background:#378ADD;transition:width 0.4s}
+  .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:1.5rem}
+  .stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px}
+  .stat-lbl{font-size:11px;color:var(--color-text-tertiary);margin-bottom:4px}
+  .stat-val{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+  .top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px}
+  .prog-label{font-size:13px;color:var(--color-text-secondary);white-space:nowrap}
+  .week-block{margin-bottom:1.5rem}
+  .week-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer;user-select:none}
+  .week-badge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;white-space:nowrap}
+  .w1{background:#E6F1FB;color:#0C447C}
+  .w2{background:#EAF3DE;color:#27500A}
+  .w3{background:#EEEDFE;color:#534AB7}
+  .w4{background:#FAEEDA;color:#633806}
+  .week-title{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+  .week-pct{font-size:12px;color:var(--color-text-tertiary);margin-left:auto}
+  .day-block{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:8px;overflow:hidden}
+  .day-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer}
+  .day-num{font-size:11px;font-weight:500;color:var(--color-text-tertiary);min-width:36px}
+  .day-title{font-size:14px;font-weight:500;color:var(--color-text-primary);flex:1}
+  .day-done-badge{font-size:11px;padding:2px 8px;border-radius:20px;background:var(--color-background-success);color:var(--color-text-success)}
+  .chevron{font-size:14px;color:var(--color-text-tertiary);transition:transform 0.2s}
+  .chevron.open{transform:rotate(180deg)}
+  .task-list{padding:0 14px 12px 14px;border-top:0.5px solid var(--color-border-tertiary)}
+  .task-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .task-row:last-child{border-bottom:none}
+  .task-check{width:18px;height:18px;flex-shrink:0;cursor:pointer;margin-top:1px;accent-color:#378ADD}
+  .task-label{font-size:13px;color:var(--color-text-secondary);line-height:1.5;flex:1;cursor:pointer}
+  .task-label.done{text-decoration:line-through;color:var(--color-text-tertiary)}
+  .reset-btn{font-size:12px;color:var(--color-text-tertiary);background:none;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:4px 10px;cursor:pointer}
+  .divider{height:0.5px;background:var(--color-border-tertiary);margin:1.5rem 0}
+</style>
+
+<div class="wrap">
+  <h2 class="sr-only">21-day Playwright learning checklist</h2>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-lbl">Tasks done</div><div class="stat-val" id="s-done">0</div></div>
+    <div class="stat"><div class="stat-lbl">Total tasks</div><div class="stat-val" id="s-total">0</div></div>
+    <div class="stat"><div class="stat-lbl">Days complete</div><div class="stat-val" id="s-days">0</div></div>
+    <div class="stat"><div class="stat-lbl">Progress</div><div class="stat-val" id="s-pct">0%</div></div>
+  </div>
+  <div class="top-bar">
+    <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+      <div class="prog-outer"><div class="prog-inner" id="prog" style="width:0%"></div></div>
+      <span class="prog-label" id="prog-label">0 / 0 tasks</span>
+    </div>
+    <button class="reset-btn" id="reset-btn">Reset all</button>
+  </div>
+  <div id="checklist"></div>
+</div>
+
+<script>
+const DAYS = [
+  {week:1,wlabel:"Week 1 — Foundations",wclass:"w1",day:1,title:"Setup & orientation (part 1)",tasks:["Install Node.js LTS from nodejs.org","Install VS Code and the Playwright extension","Open terminal and run: npm init playwright@latest","Choose TypeScript, tests folder, and install browsers","Explore the generated folder: tests/, playwright.config.ts"]},
+  {week:1,wlabel:"Week 1 — Foundations",wclass:"w1",day:2,title:"Setup & orientation (part 2)",tasks:["Run npx playwright test to confirm sample tests pass","Open the HTML report with npx playwright show-report","Read through the sample test file line by line","Watch: Playwright official intro video (YouTube)","Write a comment next to each line explaining what it does"]},
+  {week:1,wlabel:"Week 1 — Foundations",wclass:"w1",day:3,title:"Locators & actions (part 1)",tasks:["Open practicesoftwaretesting.com in browser","Learn page.goto(), page.click(), page.fill()","Write a test: navigate to homepage and assert title","Use getByRole() to click the Login button","Run your test and watch it pass"]},
+  {week:1,wlabel:"Week 1 — Foundations",wclass:"w1",day:4,title:"Locators & actions (part 2)",tasks:["Learn getByText(), getByLabel(), getByPlaceholder()","Write a login test using getByLabel for email + password","Add a test for a failed login (wrong password)","Launch Playwright Inspector: npx playwright test --debug","Step through your test line by line in the inspector"]},
+  {week:1,wlabel:"Week 1 — Foundations",wclass:"w1",day:5,title:"Assertions",tasks:["Learn expect(locator).toBeVisible()","Learn expect(locator).toHaveText()","Learn expect(page).toHaveTitle() and toHaveURL()","Add 3 assertions to your login tests","Run tests and confirm all assertions pass"]},
+  {week:1,wlabel:"Week 1 — Foundations",wclass:"w1",day:6,title:"Codegen & trace viewer",tasks:["Run: npx playwright codegen practicesoftwaretesting.com","Record a product search flow using Codegen","Copy generated code into a new test file","Run tests with: npx playwright test --trace on","Open trace viewer and explore each step visually"]},
+  {week:1,wlabel:"Week 1 — Foundations",wclass:"w1",day:7,title:"Week 1 consolidation",tasks:["Review all tests written this week","Fix any failing tests","Ensure you have 5+ passing tests total","Create a GitHub account if you don't have one","Create a repo: playwright-learning and push your code"]},
+  {week:2,wlabel:"Week 2 — Core Skills",wclass:"w2",day:8,title:"Page Object Model (part 1)",tasks:["Read about why POM exists (Google 'Page Object Model Playwright')","Create a pages/ folder in your project","Create LoginPage.ts with a class and constructor(page)","Add methods: goto(), login(email, password), getErrorMessage()","Import and use LoginPage in your login test"]},
+  {week:2,wlabel:"Week 2 — Core Skills",wclass:"w2",day:9,title:"Page Object Model (part 2)",tasks:["Create a second Page Object: ProductPage.ts","Add methods for searching and filtering products","Refactor all week 1 tests to use Page Objects","Run full test suite — confirm everything still passes","Push updated code to GitHub"]},
+  {week:2,wlabel:"Week 2 — Core Skills",wclass:"w2",day:10,title:"Test config & hooks",tasks:["Open playwright.config.ts and read every line","Set baseURL so tests use page.goto('/') not full URLs","Add a second browser project: firefox","Learn beforeEach and afterEach hooks","Add a beforeEach to your tests that navigates to home"]},
+  {week:2,wlabel:"Week 2 — Core Skills",wclass:"w2",day:11,title:"Custom fixtures",tasks:["Read Playwright docs: fixtures","Create a fixtures.ts file with a loggedInPage fixture","Use the fixture in a test so login happens automatically","Run tests in both Chrome and Firefox","Check the HTML report shows results for both browsers"]},
+  {week:2,wlabel:"Week 2 — Core Skills",wclass:"w2",day:12,title:"API testing",tasks:["Read Playwright docs: APIRequestContext","Write a test that calls the practicesoftwaretesting.com API","Assert the response status is 200","Assert a field in the JSON response body","Combine: call API first, then verify result in UI"]},
+  {week:2,wlabel:"Week 2 — Core Skills",wclass:"w2",day:13,title:"Route mocking",tasks:["Learn page.route() for intercepting requests","Mock an API response to return test data","Write a test that verifies UI behaviour with mocked data","Learn page.waitForResponse() to wait for network calls","Add a test using waitForResponse after a form submit"]},
+  {week:2,wlabel:"Week 2 — Core Skills",wclass:"w2",day:14,title:"Week 2 consolidation",tasks:["Review entire project structure","Ensure POM, fixtures, API and mock tests all exist","Write a short README.md explaining the project","Commit and push everything to GitHub","Run full suite — all tests must be green"]},
+  {week:3,wlabel:"Week 3 — Pro Patterns & CI/CD",wclass:"w3",day:15,title:"Allure reporting",tasks:["Install Allure: npm i -D allure-playwright","Add allure reporter to playwright.config.ts","Run tests and generate report: npx allure generate","Open Allure report and explore test history","Add a screenshot on failure to playwright.config.ts"]},
+  {week:3,wlabel:"Week 3 — Pro Patterns & CI/CD",wclass:"w3",day:16,title:"Video & artifacts",tasks:["Enable video: 'on-first-retry' in playwright.config.ts","Trigger a failure to see a recorded video","Understand test artifacts folder structure","Configure retries: set retries: 1 in config","Run tests and verify retry behaviour in the report"]},
+  {week:3,wlabel:"Week 3 — Pro Patterns & CI/CD",wclass:"w3",day:17,title:"GitHub Actions CI (part 1)",tasks:["Create .github/workflows/ci.yml in your project","Add a job: checkout code, install Node, install Playwright","Add step: npx playwright test","Commit and push — watch the Actions tab on GitHub","Fix any failures that appear in the pipeline"]},
+  {week:3,wlabel:"Week 3 — Pro Patterns & CI/CD",wclass:"w3",day:18,title:"GitHub Actions CI (part 2)",tasks:["Upload HTML report as a GitHub Actions artifact","Enable GitHub Pages on your repo (Settings > Pages)","Deploy the HTML report to GitHub Pages on each run","Copy the live report URL — this goes on your CV","Add a CI passing badge to your README.md"]},
+  {week:3,wlabel:"Week 3 — Pro Patterns & CI/CD",wclass:"w3",day:19,title:"Parallel & visual testing",tasks:["Set workers: 4 in playwright.config.ts","Run tests in parallel and compare speed","Learn expect(page).toHaveScreenshot()","Add a visual regression test for the homepage","Commit baseline screenshots to Git"]},
+  {week:3,wlabel:"Week 3 — Pro Patterns & CI/CD",wclass:"w3",day:20,title:"Accessibility testing",tasks:["Install axe-core: npm i -D @axe-core/playwright","Write a test that runs an accessibility audit on a page","Assert there are zero critical violations","Read through any violations and understand them","Add the a11y test to your CI pipeline"]},
+  {week:3,wlabel:"Week 3 — Pro Patterns & CI/CD",wclass:"w3",day:21,title:"Polish & publish",tasks:["Write a detailed README: what the project tests, how to run it, CI badge, live report link","Add a screenshot of a passing test run to the README","Review all code for typos and cleanup","Final push — confirm CI is green","Share GitHub repo link — ready for LinkedIn & CV"]},
+  {week:4,wlabel:"Capstone — Sauce Demo E2E Suite",wclass:"w4",day:22,title:"Capstone: project setup",tasks:["Create new repo: playwright-saucedemo","Initialise Playwright with TypeScript","Set baseURL to https://www.saucedemo.com","Create pages/LoginPage.ts, pages/ProductPage.ts, pages/CartPage.ts, pages/CheckoutPage.ts","Plan test scenarios: write them as comments first"]},
+  {week:4,wlabel:"Capstone — Sauce Demo E2E Suite",wclass:"w4",day:23,title:"Capstone: auth & product tests",tasks:["Write tests: valid login, invalid login, locked-out user","Write tests: product list loads, sort by price works","Write test: add product to cart, badge count updates","All tests using POM and fixtures","Push to GitHub, confirm CI runs"]},
+  {week:4,wlabel:"Capstone — Sauce Demo E2E Suite",wclass:"w4",day:24,title:"Capstone: cart & checkout tests",tasks:["Write test: remove item from cart","Write test: full checkout flow end-to-end","Write test: checkout with missing fields shows errors","Add API health check before UI test suite runs","All tests green in CI"]},
+  {week:4,wlabel:"Capstone — Sauce Demo E2E Suite",wclass:"w4",day:25,title:"Capstone: extras & publish",tasks:["Add visual regression test on product listing page","Add accessibility audit on checkout page","Deploy HTML report to GitHub Pages","Write a polished README with badges, screenshot, live report URL","Add project to LinkedIn Featured and CV"]}
+];
+
+const STORAGE_KEY = 'playwright-checklist-v1';
+let checked = {};
+let openDays = {};
+
+async function load() {
+  try {
+    const r = await window.storage.get(STORAGE_KEY);
+    if (r && r.value) checked = JSON.parse(r.value);
+  } catch(e) { checked = {}; }
+}
+
+async function save() {
+  try { await window.storage.set(STORAGE_KEY, JSON.stringify(checked)); } catch(e) {}
+}
+
+function taskId(day, i) { return `d${day}_t${i}`; }
+
+function updateStats() {
+  let total = 0, done = 0, fullDays = 0;
+  DAYS.forEach(d => {
+    let allDone = true;
+    d.tasks.forEach((t, i) => { total++; if (checked[taskId(d.day, i)]) done++; else allDone = false; });
+    if (allDone) fullDays++;
+  });
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('s-done').textContent = done;
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('s-days').textContent = fullDays;
+  document.getElementById('s-pct').textContent = pct + '%';
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = done + ' / ' + total + ' tasks';
+}
+
+function renderWeekPct(weekDays) {
+  let t=0,d=0;
+  weekDays.forEach(day => day.tasks.forEach((task,i) => { t++; if(checked[taskId(day.day,i)]) d++; }));
+  return t ? Math.round(d/t*100)+'%' : '0%';
+}
+
+function render() {
+  const container = document.getElementById('checklist');
+  const weeks = {};
+  DAYS.forEach(d => {
+    if (!weeks[d.week]) weeks[d.week] = {label:d.wlabel,cls:d.wclass,days:[]};
+    weeks[d.week].days.push(d);
+  });
+  container.innerHTML = '';
+  Object.values(weeks).forEach(w => {
+    const wb = document.createElement('div');
+    wb.className = 'week-block';
+    const wh = document.createElement('div');
+    wh.className = 'week-head';
+    wh.innerHTML = `<span class="week-badge ${w.cls}">${w.label.split('—')[0].trim()}</span><span class="week-title">${w.label.split('—')[1]?.trim()||w.label}</span><span class="week-pct">${renderWeekPct(w.days)} done</span>`;
+    wb.appendChild(wh);
+    w.days.forEach(d => {
+      const allDone = d.tasks.every((_,i) => checked[taskId(d.day,i)]);
+      const db = document.createElement('div');
+      db.className = 'day-block';
+      const dh = document.createElement('div');
+      dh.className = 'day-head';
+      const isOpen = openDays[d.day];
+      dh.innerHTML = `<span class="day-num">Day ${d.day}</span><span class="day-title">${d.title}</span>${allDone?'<span class="day-done-badge"><i class="ti ti-check" aria-hidden="true"></i> Done</span>':''}<i class="ti ti-chevron-down chevron ${isOpen?'open':''}" aria-hidden="true"></i>`;
+      dh.onclick = () => { openDays[d.day]=!openDays[d.day]; render(); updateStats(); };
+      db.appendChild(dh);
+      if (isOpen) {
+        const tl = document.createElement('div');
+        tl.className = 'task-list';
+        d.tasks.forEach((task,i) => {
+          const id = taskId(d.day,i);
+          const row = document.createElement('div');
+          row.className = 'task-row';
+          const cb = document.createElement('input');
+          cb.type='checkbox'; cb.className='task-check'; cb.checked=!!checked[id]; cb.id=id;
+          const lbl = document.createElement('label');
+          lbl.htmlFor=id; lbl.className='task-label'+(checked[id]?' done':''); lbl.textContent=task;
+          cb.onchange = async () => {
+            checked[id]=cb.checked;
+            lbl.className='task-label'+(cb.checked?' done':'');
+            await save(); updateStats();
+            const parentDone=d.tasks.every((_,j)=>checked[taskId(d.day,j)]);
+            const badge=dh.querySelector('.day-done-badge');
+            if(parentDone&&!badge){const b=document.createElement('span');b.className='day-done-badge';b.innerHTML='<i class="ti ti-check" aria-hidden="true"></i> Done';dh.insertBefore(b,dh.lastElementChild);}
+            else if(!parentDone&&badge){badge.remove();}
+          };
+          row.appendChild(cb); row.appendChild(lbl); tl.appendChild(row);
+        });
+        db.appendChild(tl);
+      }
+      wb.appendChild(db);
+    });
+    container.appendChild(wb);
+  });
+  updateStats();
+}
+
+document.getElementById('reset-btn').onclick = async () => {
+  if(confirm('Reset all progress?')){ checked={}; openDays={}; await save(); render(); }
+};
+
+load().then(render);
+</script>
