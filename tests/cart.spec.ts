@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { ProductPage } from '../pages/ProductPage';
 
 test('user can add a product to cart', async ({ page }) => {
-  await page.goto('https://practicesoftwaretesting.com/');
-  await page.locator('[data-test="nav-categories"]').click();
-  await page.locator('[data-test^="product-"]').first().click();
-  await page.locator('[data-test="add-to-cart"]').click();
+  const productPage = new ProductPage(page);
+  await productPage.goto();
+  await productPage.clickFirstProduct();
+  await productPage.addToCart();
   await expect(page).toHaveURL(/product/);
 });
