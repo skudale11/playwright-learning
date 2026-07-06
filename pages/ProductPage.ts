@@ -4,7 +4,7 @@ export class ProductPage {
   constructor(private page: Page) {}
 
   async goto() {
-    await this.page.goto('https://practicesoftwaretesting.com');
+    await this.page.goto('/');
   }
 
   async clickFirstProduct() {
