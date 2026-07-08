@@ -1,4 +1,4 @@
-# Playwright Learning — Test Automation Portfolio
+# Playwright Learning: Test Automation Portfolio
 
 A structured 25-day Playwright test automation project built from scratch, targeting a QA / Test Engineer role.
 
@@ -13,11 +13,11 @@ A structured 25-day Playwright test automation project built from scratch, targe
 - Cross-browser testing (Chromium, Firefox, WebKit)
 
 ## What Is Tested
-- Login flows — valid credentials, invalid credentials, error messages
-- Product browsing — navigating categories, clicking products
-- Cart functionality — adding products to cart
-- REST API — response status, data structure, field validation
-- Custom fixtures — reusable logged-in state across tests
+- Login flows: valid credentials, invalid credentials, error messages
+- Product browsing: navigating categories, clicking products
+- Cart functionality: adding products to cart
+- REST API: response status, data structure, field validation
+- Custom fixtures: reusable logged-in state across tests
 
 ## Project Structure
 
