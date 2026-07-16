@@ -14,8 +14,8 @@ test('user can log in', async ({ page }) => {
     'customer@practicesoftwaretesting.com',
     'welcome01'
   );
-  /* await expect(page).toHaveURL(/account/); */
-  await expect(page).toHaveURL(/wrongurl/);
+  await expect(page).toHaveURL(/account/); 
+  /* await expect(page).toHaveURL(/wrongurl/); */
 });
 
 test('user sees error with wrong password', async ({ page }) => {
