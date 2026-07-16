@@ -20,15 +20,64 @@ A structured 25-day Playwright test automation project built from scratch, targe
 - Custom fixtures: reusable logged-in state across tests
 - Route mocking: intercepting API calls and returning fake data
 - Network interception: waitForResponse for async request handling
+
 ## Project Structure
 
-    tests/                  Test spec files
-    pages/                  Page Object Model classes
-      LoginPage.ts          Login page interactions
-      ProductPage.ts        Product page interactions
-    fixtures.ts             Shared custom fixtures
-    playwright.config.ts    Playwright configuration
-    .github/workflows/      GitHub Actions CI pipeline
+    .github/
+      workflows/
+        playwright.yml          GitHub Actions CI pipeline
+    pages/
+      LoginPage.ts              Login page interactions (POM)
+      ProductPage.ts            Product page interactions (POM)
+    tests/
+      account.spec.ts           Account page tests using custom fixtures
+      api.spec.ts               REST API tests against products endpoint
+      cart.spec.ts              Cart functionality tests
+      example.spec.ts           Playwright sample tests (reference)
+      login.spec.ts             Login flow tests (valid, invalid credentials)
+      mock.spec.ts              Route mocking and network interception tests
+    fixtures.ts                 Shared custom fixtures (loggedInPage)
+    playwright.config.ts        Playwright configuration (baseURL, browsers, trace)
+    playwright-checklist.html   Interactive 25-day learning checklist
+    package.json                Project dependencies
+    README.md                   Project documentation
+
+## Getting Started from Scratch
+
+If you are setting this up on a new machine, follow these steps in order.
+
+**Step 1: Install prerequisites**
+
+Download and install Node.js LTS from https://nodejs.org
+Download and install VS Code from https://code.visualstudio.com
+Inside VS Code, install the extension called "Playwright Test for VSCode" by Microsoft.
+
+**Step 2: Clone the repository**
+
+Open your terminal and run:
+
+    git clone https://github.com/skudale11/playwright-learning.git
+    cd playwright-learning
+
+**Step 3: Install dependencies**
+
+    npm install
+
+**Step 4: Install Playwright browsers**
+
+    npx playwright install
+
+This downloads Chromium, Firefox, and WebKit. It takes 2 to 3 minutes.
+
+**Step 5: Verify everything works**
+
+    npx playwright test
+
+You should see all tests passing. To view the HTML report:
+
+    npx playwright show-report
+
+You are now ready to explore or extend the project.
 
 ## How To Run Locally
 
