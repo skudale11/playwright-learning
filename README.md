@@ -18,7 +18,8 @@ A structured 25-day Playwright test automation project built from scratch, targe
 - Cart functionality: adding products to cart
 - REST API: response status, data structure, field validation
 - Custom fixtures: reusable logged-in state across tests
-
+- Route mocking: intercepting API calls and returning fake data
+- Network interception: waitForResponse for async request handling
 ## Project Structure
 
     tests/                  Test spec files
