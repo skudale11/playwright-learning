@@ -11,6 +11,7 @@ A structured 25-day Playwright test automation project built from scratch, targe
 - Page Object Model (POM)
 - API Testing
 - Cross-browser testing (Chromium, Firefox, WebKit)
+- Allure reporting
 
 ## What Is Tested
 - Login flows: valid credentials, invalid credentials, error messages
@@ -37,7 +38,7 @@ A structured 25-day Playwright test automation project built from scratch, targe
       login.spec.ts             Login flow tests (valid, invalid credentials)
       mock.spec.ts              Route mocking and network interception tests
     fixtures.ts                 Shared custom fixtures (loggedInPage)
-    playwright.config.ts        Playwright configuration (baseURL, browsers, trace)
+    playwright.config.ts        Playwright configuration (baseURL, browsers, trace, Allure reporter)
     playwright-checklist.html   Interactive 25-day learning checklist
     package.json                Project dependencies
     README.md                   Project documentation
@@ -89,9 +90,15 @@ To run a specific file:
 
     npx playwright test login.spec.ts
 
-To open the HTML report after a run:
+To open the built-in HTML report after a run:
 
     npx playwright show-report
+
+To generate and open the Allure report:
+
+    npx playwright test
+    npx allure generate --output allure-report
+    npx allure open allure-report
 
 ## Author
 Suchit Kudale
