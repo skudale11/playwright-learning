@@ -5,6 +5,9 @@ A structured 25-day Playwright test automation project built from scratch, targe
 ## CI Status
 ![CI](https://github.com/skudale11/playwright-learning/actions/workflows/playwright.yml/badge.svg)
 
+## Live Test Report
+[View latest test report](https://skudale11.github.io/playwright-learning/)
+
 ## Tech Stack
 - Playwright with TypeScript
 - GitHub Actions CI/CD
