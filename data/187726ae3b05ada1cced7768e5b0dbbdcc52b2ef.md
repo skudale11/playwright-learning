@@ -12,7 +12,46 @@
 # Error details
 
 ```
-Error: A snapshot doesn't exist at /home/runner/work/playwright-learning/playwright-learning/tests/visual.spec.ts-snapshots/homepage-chromium-linux.png, writing actual.
+Error: expect(page).toHaveScreenshot(expected) failed
+
+  211345 pixels (ratio 0.23 of all image pixels) are different.
+
+  Snapshot: homepage.png
+
+Call log:
+  - Expect "toHaveScreenshot(homepage.png)" with timeout 5000ms
+    - verifying given screenshot expectation
+  - taking page screenshot
+    - disabled all CSS animations
+  - waiting for fonts to load...
+  - fonts loaded
+  - 176393 pixels (ratio 0.20 of all image pixels) are different.
+  - waiting 100ms before taking screenshot
+  - taking page screenshot
+    - disabled all CSS animations
+  - waiting for fonts to load...
+  - fonts loaded
+  - 176393 pixels (ratio 0.20 of all image pixels) are different.
+  - waiting 250ms before taking screenshot
+  - taking page screenshot
+    - disabled all CSS animations
+  - waiting for fonts to load...
+  - fonts loaded
+  - 209972 pixels (ratio 0.23 of all image pixels) are different.
+  - waiting 500ms before taking screenshot
+  - taking page screenshot
+    - disabled all CSS animations
+  - waiting for fonts to load...
+  - fonts loaded
+  - 1314 pixels (ratio 0.01 of all image pixels) are different.
+  - waiting 1000ms before taking screenshot
+  - taking page screenshot
+    - disabled all CSS animations
+  - waiting for fonts to load...
+  - fonts loaded
+  - captured a stable screenshot
+  - 211345 pixels (ratio 0.23 of all image pixels) are different.
+
 ```
 
 # Page snapshot
@@ -372,6 +411,6 @@ Error: A snapshot doesn't exist at /home/runner/work/playwright-learning/playwri
   3 | test('homepage visual snapshot', async ({ page }) => {
   4 |   await page.goto('/');
 > 5 |   await expect(page).toHaveScreenshot('homepage.png', { maxDiffPixels: 200 });
-    |   ^ Error: A snapshot doesn't exist at /home/runner/work/playwright-learning/playwright-learning/tests/visual.spec.ts-snapshots/homepage-chromium-linux.png, writing actual.
+    |                      ^ Error: expect(page).toHaveScreenshot(expected) failed
   6 | });
 ```
